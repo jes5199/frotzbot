@@ -34,8 +34,9 @@ end
     next
   end
 
-  command = data.text.sub(/\Afrotz\S*\s+/,"")
-  command = data.text.sub(/\Af /,"")
+  command = data.text
+  command.sub!(/\Afrotz\S*\s+/,"")
+  command.sub!(/\Af /,"")
 
   scene = `ruby play.rb #{sh command}`
   topic = nil
