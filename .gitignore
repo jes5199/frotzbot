@@ -2,3 +2,5 @@ frotz
 *.swp
 slack.token
 current.game
+topic.txt
+Gemfile.lock

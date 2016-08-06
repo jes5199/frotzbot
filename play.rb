@@ -25,7 +25,7 @@ when "@recap" then
   exit
 when /\A@/
   unless brand_new_game
-    tag = game_action[1..-1]
+    tag = game_action[1..-1].strip.sub(/_$/,"")
     previous_game_state = `cd #{savedir} && git rev-parse HEAD`[0..10]
     `cd #{savedir} && git checkout #{tag.strip.inspect} && git checkout -b play-#{nowstamp}`
     recap
@@ -88,7 +88,10 @@ if game_action
   @stdin.puts(savefile)
   @stdin.puts("y")
   read_content
-  `cd #{savedir} && git add save.qzl scene.txt && git commit -m #{game_action.inspect}`
+
+  commit_message = "> #{game_action}"
+
+  `cd #{savedir} && git add save.qzl scene.txt && git commit -m #{commit_message.inspect}`
 end
 
 @stdin.close

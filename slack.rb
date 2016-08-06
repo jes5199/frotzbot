@@ -27,19 +27,25 @@ end
 @client.on :hello do
   puts "Frotzbot online!"
   @channel = @client.channels.detect {|id,c| c.name == 'adventure'}[0]
+  @user = @client.users.detect {|id,c| c.name == 'frotzbot'}[0]
+  puts "user #{@user} in channel #{@channel}"
 end
 
 @client.on :message do |data|
-  next unless data.text =~ /\A@?frotz/ || data.text =~ /\Af /
-  if data.text == "frotzbot!"
+  command = data.text
+  command = command.lstrip
+  next unless command =~ /\Afrotz/ || command =~ /\Af( |\Z)/ || command.start_with?("<@#{@user}>")
+  if command == "frotzbot!"
     say "Hi <@#{data.user}>!"
     topic "testing!"
     next
   end
 
-  command = data.text
-  command.sub!(/\A@?frotz\S*\s+/,"")
-  command.sub!(/\Af /,"")
+  command.sub!(/\A<@#{@user}>\S*\s*/,"")
+  command.sub!(/\Afrotz\S*\s*/,"")
+  command.sub!(/\Af(\s+|\Z)/,"")
+
+  puts command
 
   scene = `ruby play.rb #{sh command}`
   topic = nil
