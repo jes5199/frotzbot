@@ -48,6 +48,9 @@ end
 def read_screen
   screen = ""
   read_content do |content|
+    if content =~ /\[Hit any key.\]/
+      @stdin.puts
+    end
     screen << content
   end
   screen.sub!(/^.*\Z/,"")
