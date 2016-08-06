@@ -9,7 +9,7 @@ def sh(text)
   text.to_s.inspect
 end
 
-@topic_text = File.read("topic.txt").strip
+@topic_text = (File.read("topic.txt").strip rescue nil)
 def topic(topic_text)
   return if @topic_text == topic_text
   File.open("topic.txt","w"){|f| f.print(topic_text)}
