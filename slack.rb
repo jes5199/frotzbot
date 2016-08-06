@@ -9,9 +9,10 @@ def sh(text)
   text.to_s.inspect
 end
 
-@topic_text = nil
+@topic_text = File.read("topic.txt").strip
 def topic(topic_text)
   return if @topic_text == topic_text
+  File.open("topic.txt","w"){|f| f.print(topic_text)}
   @topic_text = topic_text
   @client.web_client.channels_setTopic channel: @channel, topic: topic_text
 end
