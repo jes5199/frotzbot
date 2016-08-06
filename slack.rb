@@ -42,14 +42,21 @@ end
   topic = nil
 
   scene_lines = scene.split("\n")
-  if scene_lines[1] = ".\n"
-    topic = scene_lines[0]
-    scene = scene_lines[2..-1].join("\n")
+
+  if scene_lines[1] == ".\n"
+    topic = scene_lines.shift
+    _ = scene_lines.shift
   end
+
+  if scene_lines[-1] =~ /\A\s*_.*_\s*\Z/
+    info = scene_lines.pop
+  end
+
+  scene = scene_lines.join("\n")
 
   topic(topic) if topic
 
-  message = "> #{command}\n#{scene}"
+  message = "> `#{command}`\n```#{scene}```\n#{info}"
   say message
 end
 
