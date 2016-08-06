@@ -22,6 +22,8 @@ end
 case game_action
 when "@recap" then
   recap
+    previous_game_state = `cd #{savedir} && git rev-parse HEAD`[0..10]
+    puts "_current game state is @#{game_state} _"
   exit
 when /\A@/
   unless brand_new_game
