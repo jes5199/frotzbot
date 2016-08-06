@@ -34,7 +34,7 @@ end
 @client.on :message do |data|
   command = data.text
   command = command.lstrip
-  next unless command =~ /\Afrotz/ || command =~ /\Af( |\Z)/ || command.start_with?("<@#{@user}>")
+  next unless command =~ /\Afrotz/i || command =~ /\Af( |\Z)/i || command.start_with?("<@#{@user}>")
   if command == "frotzbot!"
     say "Hi <@#{data.user}>!"
     topic "testing!"
@@ -42,8 +42,8 @@ end
   end
 
   command.sub!(/\A<@#{@user}>\S*\s*/,"")
-  command.sub!(/\Afrotz\S*\s*/,"")
-  command.sub!(/\Af(\s+|\Z)/,"")
+  command.sub!(/\Afrotz\S*\s*/i,"")
+  command.sub!(/\Af(\s+|\Z)/i,"")
 
   puts command
 
