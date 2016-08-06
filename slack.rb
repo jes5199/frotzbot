@@ -24,6 +24,7 @@ end
 @client = Slack::RealTime::Client.new
 
 @client.on :hello do
+  puts "Frotzbot online!"
   @channel = @client.channels.detect {|id,c| c.name == 'adventure'}[0]
 end
 
