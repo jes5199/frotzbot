@@ -52,9 +52,14 @@ end
 
   scene_lines = scene.split("\n")
 
+  # dfrotz represents control characters by putting symbols in column 0
   if scene_lines[1] == ". "
     topic = scene_lines.shift
     _ = scene_lines.shift
+  elsif scene_lines.any?{|line| line.start_with?("( ")}
+    index = scene_lines.find_index{|line| line.start_with?("( ")}
+    topic = scene_lines.delete_at(index).sub("( ","  ")
+    scene_lines.reject!{|line| line == ". "}
   elsif scene_lines[0] =~ /^\s+Lower Theater, on the bench \s+\(hot, sticky\)\s*$/
     # workaround for so-far's opening banner
     topic = scene_lines.shift
