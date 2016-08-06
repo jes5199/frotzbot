@@ -56,9 +56,9 @@ end
   if scene_lines[1] == ". "
     topic = scene_lines.shift
     _ = scene_lines.shift
-  elsif scene_lines.any?{|line| line.start_with?("( ")}
-    index = scene_lines.find_index{|line| line.start_with?("( ")}
-    topic = scene_lines.delete_at(index).sub("( ","  ")
+  elsif scene_lines.any?{|line| line.start_with?(") ")}
+    index = scene_lines.find_index{|line| line.start_with?(") ")}
+    topic = scene_lines.delete_at(index).sub(") ","  ")
     scene_lines.reject!{|line| line == ". "}
   elsif scene_lines[0] =~ /^\s+Lower Theater, on the bench \s+\(hot, sticky\)\s*$/
     # workaround for so-far's opening banner
@@ -75,8 +75,10 @@ end
   scene = scene_lines.join("\n")
 
   topic(topic) if topic
-
-  message = "> `#{command}`\n```#{scene}```\n#{info}"
+  
+  message = "> `#{command}`\n"
+  message += "```#{scene.gsub("\n  [Hit any key.]\n","```\n...\n```")}```\n"
+  message += "\n#{info}"
   say message
 end
 
