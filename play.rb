@@ -27,7 +27,7 @@ when /\A@/
   unless brand_new_game
     tag = game_action[1..-1].strip.sub(/_$/,"")
     previous_game_state = `cd #{savedir} && git rev-parse HEAD`[0..10]
-    `cd #{savedir} && git checkout #{tag.strip.inspect} && git checkout -b play-#{nowstamp}`
+    `cd #{savedir} && git checkout -q #{tag.strip.inspect} && git checkout -b play-#{nowstamp}`
     recap
     puts "_previous game state was @#{previous_game_state} _"
     exit
