@@ -51,6 +51,7 @@ end
 
 if File.exists?(deadfile)
   puts "_Game has ended, maybe you want to undo or load a saved point?_"
+  exit
 end
 
 @stdin, @stdout, @stderr, @wait_thr = Open3.popen3(command_line)
@@ -110,12 +111,12 @@ if game_action
     @stdin.puts("QUIT")
     File.open(deadfile,"w").close
     `cd #{savedir} && git add dead`
+  else
+    @stdin.puts("SAVE")
+    @stdin.puts(savefile)
+    @stdin.puts("y")
+    read_content
   end
-
-  @stdin.puts("SAVE")
-  @stdin.puts(savefile)
-  @stdin.puts("y")
-  read_content
 
   commit_message = "> #{game_action}"
 
