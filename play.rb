@@ -26,10 +26,10 @@ when "@recap" then
   recap
   puts "_current game state is @#{game_state} _"
   exit
-when /\A@?save\Z/
+when /\A@?save\Z/i
   puts "_current game state is @#{game_state} _"
   exit
-when /\A@?restore\Z/
+when /\A@?restore\Z/i
   puts "_just tell me what same state to restore to with an @-sign and the state hash_"
   exit
 when /\A@/
