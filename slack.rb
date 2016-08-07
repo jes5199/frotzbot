@@ -77,7 +77,7 @@ end
   topic(topic) if topic
   
   message = "> `#{command}`\n"
-  message += "```#{scene.gsub("\n  [Hit any key.]\n","```\n...\n```")}```\n"
+  message += "```#{scene.gsub("\n  [Hit any key.]\n","```\n...\n```")}```\n".gsub("``````","")
   message += "\n#{info}"
   say message
 end

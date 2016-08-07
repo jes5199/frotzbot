@@ -19,16 +19,23 @@ def nowstamp
   Time.now.utc.to_s.gsub(/[ :]/,".")
 end
 
+game_state = `cd #{savedir} && git rev-parse HEAD`[0..10]
+
 case game_action
 when "@recap" then
   recap
-    previous_game_state = `cd #{savedir} && git rev-parse HEAD`[0..10]
-    puts "_current game state is @#{game_state} _"
+  puts "_current game state is @#{game_state} _"
+  exit
+when /\A@?save\Z/
+  puts "_current game state is @#{game_state} _"
+  exit
+when /\A@?restore\Z/
+  puts "_just tell me what same state to restore to with an @-sign and the state hash_"
   exit
 when /\A@/
   unless brand_new_game
     tag = game_action[1..-1].strip.sub(/_$/,"")
-    previous_game_state = `cd #{savedir} && git rev-parse HEAD`[0..10]
+    previous_game_state = game_state
     `cd #{savedir} && git checkout -q #{tag.strip.inspect} && git checkout -b play-#{nowstamp}`
     recap
     puts "_previous game state was @#{previous_game_state} _"
