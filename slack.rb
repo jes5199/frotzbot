@@ -65,6 +65,15 @@ end
     topic = scene_lines.shift
   end
 
+  if scene_lines.any?{|line| line.start_with?(". ")}
+    index = scene_lines.find_index{|line| line.start_with?(". ")}
+    if scene_lines[index + 2].start_with?(". ")
+      scene_lines[index + 0] = "```"
+      scene_lines[index + 1] = "`" + scene_lines[index + 1] + "`"
+      scene_lines[index + 2] = "```"
+    end
+  end
+
   if scene_lines[-1] =~ /\A\s*_.*_\s*\Z/
     info = scene_lines.pop
   end
