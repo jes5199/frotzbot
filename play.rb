@@ -4,6 +4,7 @@ gamefile = File.read("current.game").strip
 
 savedir = "history/" + gamefile
 savefile = savedir + "/save.qzl"
+deathfile = savedir + "/dead"
 @scenefile = savedir + "/scene.txt"
 brand_new_game = ! Dir.exists?(savedir)
 
@@ -26,6 +27,11 @@ when "@recap" then
   recap
   puts "_current game state is @#{game_state} _"
   exit
+when /\A@?undo\Z/i
+  `cd #{savedir} && git checkout -q HEAD^ && git checkout -b play-#{nowstamp}`
+  recap
+  puts "_last move undone, current game state is @#{game_state} _"
+  exit
 when /\A@?save\Z/i
   puts "_current game state is @#{game_state} _"
   exit
@@ -41,6 +47,10 @@ when /\A@/
     puts "_previous game state was @#{previous_game_state} _"
     exit
   end
+end
+
+if File.exists?(deathfile)
+  puts "_Game has ended, maybe you want to undo or load a saved point?_"
 end
 
 @stdin, @stdout, @stderr, @wait_thr = Open3.popen3(command_line)
@@ -95,6 +105,12 @@ if game_action
   whole_content = read_screen
   print whole_content
   save_scene whole_content
+
+  if whole_content =~ /Would you like to RESTART, RESTORE a saved game,/
+    @stdin.puts("QUIT")
+    File.open(deathfile,"w").close
+    `cd #{savedir} && git add dead`
+  end
 
   @stdin.puts("SAVE")
   @stdin.puts(savefile)
