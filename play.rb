@@ -4,7 +4,7 @@ gamefile = File.read("current.game").strip
 
 savedir = "history/" + gamefile
 savefile = savedir + "/save.qzl"
-deathfile = savedir + "/dead"
+deadfile = savedir + "/dead"
 @scenefile = savedir + "/scene.txt"
 brand_new_game = ! Dir.exists?(savedir)
 
@@ -49,7 +49,7 @@ when /\A@/
   end
 end
 
-if File.exists?(deathfile)
+if File.exists?(deadfile)
   puts "_Game has ended, maybe you want to undo or load a saved point?_"
 end
 
@@ -108,7 +108,7 @@ if game_action
 
   if whole_content =~ /Would you like to RESTART, RESTORE a saved game,/
     @stdin.puts("QUIT")
-    File.open(deathfile,"w").close
+    File.open(deadfile,"w").close
     `cd #{savedir} && git add dead`
   end
 
